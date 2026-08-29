@@ -9,17 +9,14 @@ PKG_RELEASE:=1
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://gn.googlesource.com/gn.git
-PKG_SOURCE_DATE:=2023-04-05
-PKG_SOURCE_VERSION:=28b7b6c507eb808567e3aea446cd259f7691fddc
-PKG_MIRROR_HASH:=5b112442eabea4b906cc409237fac13b8efb4f5acb25989b1883d5ce96deebd2
+PKG_SOURCE_DATE:=2026-03-31
+PKG_SOURCE_VERSION:=6e8dcdebbadf4f8aa75e6a4b6e0bdf89dce1513a
+PKG_MIRROR_HASH:=746e218a5674d4a4b61ebcf393ce5d4e7dc0068d02084fe5a809c870859fdedb
 
 PKG_LICENSE:=BSD 3-Clause
 PKG_LICENSE_FILES:=LICENSE
 PKG_MAINTAINER:=Tianling Shen <cnsztl@immortalwrt.org>
 
-ifneq ($(wildcard $(TOPDIR)/feeds/packages/devel/ninja/ninja.mk),)
-PKG_BUILD_DEPENDS+= ninja/host
-endif
 PKG_HOST_ONLY:=1
 HOST_BUILD_PARALLEL:=1
 
@@ -41,11 +38,12 @@ endef
 
 define Host/Configure
 	$(PYTHON) $(HOST_BUILD_DIR)/build/gen.py \
-		--no-last-commit-position
+		--no-last-commit-position \
+		--allow-warnings
 endef
 
 define Host/Compile
-	ninja -C $(HOST_BUILD_DIR)/out
+	+$(NINJA) -C $(HOST_BUILD_DIR)/out
 endef
 
 define Host/Install
